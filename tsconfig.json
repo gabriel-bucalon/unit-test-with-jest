@@ -23,12 +23,20 @@
     "lib": [
       "ES2022",
       "dom"
+    ],
+    "types": [
+      "jest"
     ]
   },
+  "include": [
+    "src/**/*",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
 }
