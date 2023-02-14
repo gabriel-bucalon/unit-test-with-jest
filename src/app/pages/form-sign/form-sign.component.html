@@ -1,0 +1,20 @@
+<div>
+
+    <my-input (sendData)="getData($event, 'name')" aria-required="true" label="Nome:"></my-input>
+    
+    <div>
+      <my-input (sendData)="getData($event, 'address')" aria-required="true" label="Endereço:"></my-input>
+    </div>
+    
+    <div>
+      <my-input (sendData)="getData($event, 'city')" aria-required="true" label="Cidade:"></my-input>
+    </div>
+
+    <my-selector (sendData)="getData($event, 'position')" aria-required="true" label="Cargo:" [values]="cargos"></my-selector>
+  </div>
+  <br />
+  <br />
+  <div>
+    
+    <button [disabled]="formIsDisabled()" (click)="calledWindow()">Enviar</button>
+  </div>

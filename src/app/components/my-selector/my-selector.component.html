@@ -1,0 +1,7 @@
+<div>
+    <label>{{label}}</label>
+    <br>
+    <select (change)="sendDataToParant($event)">
+        <option  *ngFor="let item of values" [value]="item">{{item}}</option>
+    </select>
+</div>
