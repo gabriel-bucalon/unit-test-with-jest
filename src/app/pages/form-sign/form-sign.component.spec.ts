@@ -1,57 +1,87 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormSignComponent } from './form-sign.component';
+import { EmployeeService } from '../../services/employee.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { FormFilled } from 'src/types/FormSign';
 
 describe('FormSignComponent', () => {
   let component: FormSignComponent;
+  let fixture: ComponentFixture<FormSignComponent>;
+  let httpTestingController: HttpTestingController;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ FormSignComponent ],
+      imports: [ HttpClientTestingModule ],
+      providers: [ EmployeeService ]
+    })
+    .compileComponents();
+  });
 
   beforeEach(() => {
-    component = new FormSignComponent();
+    fixture = TestBed.createComponent(FormSignComponent);
+    component = fixture.componentInstance;
+    httpTestingController = TestBed.inject(HttpTestingController);
+    fixture.detectChanges();
   });
 
-  it('should have a cargos property', () => {
-    expect(component.cargos).toBeDefined();
-    expect(component.cargos instanceof Array).toBeTruthy();
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
-  it('should have a datasCaptured property', () => {
-    expect(component.datasCaptured).toBeDefined();
-    expect(typeof component.datasCaptured).toEqual('object');
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('getData should update datasCaptured correctly', () => {
-    component.getData('John Doe', 'name');
-    component.getData('123 Main St', 'address');
-    component.getData('New York', 'city');
-    component.getData('Desenvolvedor', 'position');
-
-    expect(component.datasCaptured).toEqual({
+  it('should add a person to the list', () => {
+    const person: FormFilled = {
       name: 'John Doe',
       address: '123 Main St',
-      city: 'New York',
-      position: 'Desenvolvedor'
-    });
-  });
+      city: 'Anytown',
+      position: 'Developer'
+    };
 
-  it('formIsDisabled should return true if any field is empty', () => {
-    component.getData('John Doe', 'name');
-    component.getData('123 Main St', 'address');
-    component.getData('New York', 'city');
+    component.datasCaptured = person;
+    const expectedPersonList = [...component.employeeService.personList, person];
 
-    expect(component.formIsDisabled()).toBeTruthy();
-
-    component.getData('Desenvolvedor', 'position');
-
-    expect(component.formIsDisabled()).toBeFalsy();
-  });
-
-  it('calledWindow should display an alert with all the data', () => {
-    component.getData('John Doe', 'name');
-    component.getData('123 Main St', 'address');
-    component.getData('New York', 'city');
-    component.getData('Desenvolvedor', 'position');
-
-    const spy = jest.spyOn(window, 'alert');
     component.calledWindow();
 
-    expect(spy).toHaveBeenCalledWith(`Nome: John Doe \n Endereço: 123 Main St \n Cidade New York \n Cargo Desenvolvedor`);
+    const req = httpTestingController.expectOne('http://localhost:3000/personList');
+    expect(req.request.method).toEqual('POST');
+    req.flush({}); // Simulate successful response
+
+    expect(component.employeeService.personList).toEqual(expectedPersonList);
+  });
+
+  it('should disable the form when required fields are missing', () => {
+    const emptyForm: FormFilled = {
+      name: '',
+      address: '',
+      city: '',
+      position: '',
+    };
+
+    component.datasCaptured = emptyForm;
+    expect(component.formIsDisabled()).toBe(true);
+
+    const partiallyFilledForm: FormFilled = {
+      name: 'John Doe',
+      address: '123 Main St',
+      city: '',
+      position: '',
+    };
+
+    component.datasCaptured = partiallyFilledForm;
+    expect(component.formIsDisabled()).toBe(true);
+
+    const fullyFilledForm: FormFilled = {
+      name: 'John Doe',
+      address: '123 Main St',
+      city: 'Anytown',
+      position: 'Developer',
+    };
+
+    component.datasCaptured = fullyFilledForm;
+    expect(component.formIsDisabled()).toBe(false);
   });
 });
