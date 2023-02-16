@@ -7,6 +7,7 @@ import {FormSignComponent} from './pages/form-sign/form-sign.component';
 import {HomeComponent}  from './pages/home/home.component';
 import { MyInputComponent } from './components/my-input/my-input.component';
 import { MySelectorComponent } from './components/my-selector/my-selector.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MySelectorComponent } from './components/my-selector/my-selector.compon
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
