@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="15" failures="0" errors="0" time="5.034">
+  <testsuite name="HomeComponent" errors="0" failures="0" skipped="0" timestamp="2023-02-16T19:13:53" time="2.634" tests="2">
+    <testcase classname="HomeComponent should create the component" name="HomeComponent should create the component" time="0.051">
+    </testcase>
+    <testcase classname="HomeComponent should navigate to /sign route" name="HomeComponent should navigate to /sign route" time="0.013">
+    </testcase>
+  </testsuite>
+  <testsuite name="AppComponent" errors="0" failures="0" skipped="0" timestamp="2023-02-16T19:13:53" time="2.702" tests="2">
+    <testcase classname="AppComponent should create the app" name="AppComponent should create the app" time="0.061">
+    </testcase>
+    <testcase classname="AppComponent should have as title &apos;unit-test-with-jest&apos;" name="AppComponent should have as title &apos;unit-test-with-jest&apos;" time="0.018">
+    </testcase>
+  </testsuite>
+  <testsuite name="FormSignComponent" errors="0" failures="0" skipped="0" timestamp="2023-02-16T19:13:55" time="0.773" tests="5">
+    <testcase classname="FormSignComponent should have a cargos property" name="FormSignComponent should have a cargos property" time="0.003">
+    </testcase>
+    <testcase classname="FormSignComponent should have a datasCaptured property" name="FormSignComponent should have a datasCaptured property" time="0.001">
+    </testcase>
+    <testcase classname="FormSignComponent getData should update datasCaptured correctly" name="FormSignComponent getData should update datasCaptured correctly" time="0.001">
+    </testcase>
+    <testcase classname="FormSignComponent formIsDisabled should return true if any field is empty" name="FormSignComponent formIsDisabled should return true if any field is empty" time="0.049">
+    </testcase>
+    <testcase classname="FormSignComponent calledWindow should display an alert with all the data" name="FormSignComponent calledWindow should display an alert with all the data" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="MySelectorComponent" errors="0" failures="0" skipped="0" timestamp="2023-02-16T19:13:53" time="3.498" tests="4">
+    <testcase classname="MySelectorComponent should create" name="MySelectorComponent should create" time="0.003">
+    </testcase>
+    <testcase classname="MySelectorComponent should set default label value" name="MySelectorComponent should set default label value" time="0.003">
+    </testcase>
+    <testcase classname="MySelectorComponent should set default values array" name="MySelectorComponent should set default values array" time="0.001">
+    </testcase>
+    <testcase classname="MySelectorComponent should emit value when sendDataToParant is called" name="MySelectorComponent should emit value when sendDataToParant is called" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="MyInputComponent" errors="0" failures="0" skipped="0" timestamp="2023-02-16T19:13:53" time="3.556" tests="2">
+    <testcase classname="MyInputComponent should create" name="MyInputComponent should create" time="0.002">
+    </testcase>
+    <testcase classname="MyInputComponent should emit data when sendDataToParent is called" name="MyInputComponent should emit data when sendDataToParent is called" time="0.002">
+    </testcase>
+  </testsuite>
+</testsuites>
