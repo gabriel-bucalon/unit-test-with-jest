@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { EmployeeService } from '../../services/employee.service';
 import { FormFilled } from 'src/types/FormSign';
 
 @Component({
@@ -15,12 +16,15 @@ export class FormSignComponent {
     position: '',
   };
 
-  getData(data: String, field: keyof FormFilled): void {
+  constructor(public employeeService: EmployeeService){}
+
+  getData(data: any, field: keyof FormFilled): void {
     this.datasCaptured[field] = data;
   }
 
   calledWindow(): void {
     alert(`Nome: ${this.datasCaptured.name} \n Endereço: ${this.datasCaptured.address} \n Cidade ${this.datasCaptured.city} \n Cargo ${this.datasCaptured.position}`)
+    this.employeeService.postPersonList(this.datasCaptured);
   }
 
   formIsDisabled(): Boolean {
