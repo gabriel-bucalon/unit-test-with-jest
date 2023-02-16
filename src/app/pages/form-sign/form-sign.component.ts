@@ -4,7 +4,7 @@ import { FormFilled } from 'src/types/FormSign';
 @Component({
   selector: 'app-form-sign',
   templateUrl: './form-sign.component.html',
-  styleUrls: ['./form-sign.component.css']
+  styleUrls: ['./form-sign.component.scss']
 })
 export class FormSignComponent {
   cargos:Array<string>  = ["Desenvolvedor", "QA", "Arquiteto"];
