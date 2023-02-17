@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormFilled } from 'src/types/FormSign';
 import { HttpClient } from '@angular/common/http';
+import { catchError, map, Observable, of } from 'rxjs';
 
 
 @Injectable({
@@ -8,7 +9,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class EmployeeService {
   personList: Array<FormFilled> = [];
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.getPersonList();
+   }
 
   postPersonList(person: any) {
     this.setPersonId(person);
@@ -34,15 +37,14 @@ export class EmployeeService {
       );
   }
 
-  private getPersonList() {
-    this.http.get('http://localhost:3000/personList')
-      .subscribe(
-        (res: any) => {
-          this.personList = res;
-          console.log('get person list call from db.json', this.personList);
-        },
-        (err: any) => console.error(err)
-      );
+  getPersonList(): Observable<any> {
+    return this.http.get<any>('http://localhost:3000/personList').pipe(
+      map(res => res),
+      catchError(err => {
+        console.error(err);
+        return of([]);
+      })
+    );
   }
 
   private addPerson(person: FormFilled) {
