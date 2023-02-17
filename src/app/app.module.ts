@@ -8,6 +8,7 @@ import {HomeComponent}  from './pages/home/home.component';
 import { MyInputComponent } from './components/my-input/my-input.component';
 import { MySelectorComponent } from './components/my-selector/my-selector.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ListEmployeeComponent } from './pages/list-employee/list-employee.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     FormSignComponent,
     MyInputComponent,
-    MySelectorComponent
+    MySelectorComponent,
+    ListEmployeeComponent
   ],
   imports: [
     BrowserModule,

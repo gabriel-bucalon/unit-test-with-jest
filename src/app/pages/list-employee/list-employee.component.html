@@ -1,0 +1,19 @@
+<section>
+    <div *ngIf="employees && employees.length === 0">
+        <p>employees not found</p>
+    </div>
+    <div>
+        <ul>
+            <li *ngFor="let employee of employees">
+                <p> Nome: {{employee.name}}</p>
+                <p>Endereço: {{employee.address}}</p>
+                <p>Cidade: {{employee.city}}</p>
+                <p>Cargo: {{employee.position}}</p>
+
+                <button type="button">Deletar?</button>
+            <hr>
+
+            </li>
+        </ul>
+    </div>
+</section>
