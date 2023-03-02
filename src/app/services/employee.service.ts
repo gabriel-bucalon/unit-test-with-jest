@@ -9,36 +9,21 @@ import { catchError, map, Observable, of } from 'rxjs';
 })
 export class EmployeeService {
   personList: Array<FormFilled> = [];
-  constructor(private http: HttpClient) {
-    this.getPersonList();
-   }
+  URL = 'http://localhost:3000/personList';
+  constructor(private http: HttpClient) {}
 
-  postPersonList(person: any) {
+  postPersonList(person: FormFilled): Observable<FormFilled> {
     this.setPersonId(person);
-    this.http.post('http://localhost:3000/personList', person)
-      .subscribe(
-        (res: any) => {
-          this.addPerson(person);
-          console.log('post person list call to db.json', res, this.personList);
-        },
-        (err: any) => console.error(err)
-      );
+    this.addPerson(person);
+    return this.http.post<FormFilled>(`${this.URL}`, person)
   }
 
-  deletePerson(id: number) {
-    const url = `http://localhost:3000/personList/${id}`;
-    this.http.delete(url)
-      .subscribe(
-        (res: any) => {
-          this.getPersonList();
-          console.log('remove person', id, 'from db.json', res, this.personList);
-        },
-        (err: any) => console.error(err)
-      );
+  deletePerson(id: Number): Observable<FormFilled> {
+    return this.http.delete<FormFilled>(`${this.URL}/${id}`);
   }
 
-  getPersonList(): Observable<any> {
-    return this.http.get<any>('http://localhost:3000/personList').pipe(
+  getPersonList(): Observable<FormFilled[]> {
+    return this.http.get<FormFilled[]>(`${this.URL}`).pipe(
       map(res => res),
       catchError(err => {
         console.error(err);

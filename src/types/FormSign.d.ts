@@ -1,7 +1,7 @@
 export type FormFilled = {
-    id?: Number,
+    id: Number,
     name: String,
-    address: String, 
+    address: String,
     city: String,
     position: String
 }

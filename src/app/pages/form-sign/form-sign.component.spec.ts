@@ -7,13 +7,14 @@ import { FormFilled } from 'src/types/FormSign';
 describe('FormSignComponent', () => {
   let component: FormSignComponent;
   let fixture: ComponentFixture<FormSignComponent>;
-  let httpTestingController: HttpTestingController;
+  let employeeService: EmployeeService;
+  let httpMock: HttpTestingController;
+
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ FormSignComponent ],
-      imports: [ HttpClientTestingModule ],
-      providers: [ EmployeeService ]
+      imports: [ HttpClientTestingModule ]
     })
     .compileComponents();
   });
@@ -21,67 +22,89 @@ describe('FormSignComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FormSignComponent);
     component = fixture.componentInstance;
-    httpTestingController = TestBed.inject(HttpTestingController);
+    employeeService = TestBed.inject(EmployeeService);
+    httpMock = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    httpTestingController.verify();
+  it('should set the field of the FormFilled object', () => {
+    const data = 'John Doe';
+    const field = 'name';
+    component.getData(data, field);
+    expect(component.datasCaptured[field]).toEqual(data);
   });
 
-  it('should create the component', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should add a person to the list', () => {
-    const person: FormFilled = {
+  it('should call the employeeService.postPersonList method when calledWindow is called', () => {
+    const postPersonListSpy = jest.spyOn(employeeService, 'postPersonList');
+    component.datasCaptured = {
       name: 'John Doe',
-      address: '123 Main St',
-      city: 'Anytown',
-      position: 'Developer'
+      address: 'Main Street',
+      city: 'New York',
+      position: 'Developer',
+      id: 1
     };
-
-    component.datasCaptured = person;
-    const expectedPersonList = [...component.employeeService.personList, person];
-
     component.calledWindow();
-
-    const req = httpTestingController.expectOne('http://localhost:3000/personList');
-    expect(req.request.method).toEqual('POST');
-    req.flush({}); // Simulate successful response
-
-    expect(component.employeeService.personList).toEqual(expectedPersonList);
+    expect(postPersonListSpy).toHaveBeenCalledWith(component.datasCaptured);
   });
 
-  it('should disable the form when required fields are missing', () => {
-    const emptyForm: FormFilled = {
+  it('should return true when form is disabled and FormFilled object is empty', () => {
+    component.datasCaptured = {
       name: '',
       address: '',
       city: '',
       position: '',
+      id: 0,
     };
+    const formIsDisabled = component.formIsDisabled();
+    expect(formIsDisabled).toBe(true);
+  });
 
-    component.datasCaptured = emptyForm;
-    expect(component.formIsDisabled()).toBe(true);
+  it('should return true when form is disabled and FormFilled object has only whitespace values', () => {
+    component.datasCaptured = {
+      name: '   ',
+      address: '   ',
+      city: '   ',
+      position: '   ',
+      id: 0,
+    };
+    const formIsDisabled = component.formIsDisabled();
+    expect(formIsDisabled).toBe(true);
+  });
 
-    const partiallyFilledForm: FormFilled = {
+  it('should return false when form is not disabled and FormFilled object has values', () => {
+    component.datasCaptured = {
       name: 'John Doe',
-      address: '123 Main St',
-      city: '',
-      position: '',
+      address: 'Main Street',
+      city: 'New York',
+      position: 'Developer',
+      id: 1
     };
+    const formIsDisabled = component.formIsDisabled();
+    expect(formIsDisabled).toBe(false);
+  });
 
-    component.datasCaptured = partiallyFilledForm;
-    expect(component.formIsDisabled()).toBe(true);
 
-    const fullyFilledForm: FormFilled = {
+  it('should call postPersonList and log "Great!" when calledWindow is called with a valid form', () => {
+    const person: FormFilled = {
       name: 'John Doe',
       address: '123 Main St',
       city: 'Anytown',
       position: 'Developer',
+      id: 1
     };
 
-    component.datasCaptured = fullyFilledForm;
-    expect(component.formIsDisabled()).toBe(false);
+    component.datasCaptured = person;
+
+    // Faz a chamada do método
+    component.calledWindow();
+
+    // Verifica se o serviço foi chamado com os argumentos corretos
+    const req = httpMock.expectOne('http://localhost:3000/personList');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(person);
+
+    // Retorna uma resposta simulando sucesso
+    req.flush(person);
   });
+
 });

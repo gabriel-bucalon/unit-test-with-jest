@@ -7,6 +7,5 @@ module.exports = {
   coverageReporters: ["html"],
   verbose: true,
   roots: ["src"],
-  collectCoverage: true,
   coverageReporters: ["html"],
 };
